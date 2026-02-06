@@ -1,0 +1,206 @@
+[
+  {
+    "patient_id": "CIPN3111",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK/T2/R4.CIPN111.dat",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK/T2/R4.CIPN111_0.mont",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK/T2/R5.CIPN111_0.mont",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK/T2/R5.CIPN111.ini",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK/T2/R5.CIPN111.dat",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK/T2/R4.CIPN111.ini",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK/T1/R1.CIPN111.dat",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK/T1/R2.CIPN111_0.mont",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK/T1/R2.CIPN111.dat",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK/T1/R1.CIPN111_0.mont",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK/T1/R2.CIPN111.ini",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK/T1/R1.CIPN111.ini",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK TFA/T2/R4.CIPN111.dat",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK TFA/T2/R4.CIPN111_0.mont",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK TFA/T2/R5.CIPN111_0.mont",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK TFA/T2/R5.CIPN111.ini",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK TFA/T2/R5.CIPN111.dat",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK TFA/T2/R4.CIPN111.ini",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK TFA/T1/R1.CIPN111.dat",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK TFA/T1/R2.CIPN111_0.mont",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK TFA/T1/R2.CIPN111.dat",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK TFA/T1/R1.CIPN111_0.mont",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK TFA/T1/R2.CIPN111.ini",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3111",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3111 JK TFA/T1/R1.CIPN111.ini",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3131",
+    "test": "T4",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3131 RA/T4/cache.db2",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3131",
+    "test": "T4",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3131 RA TFA/T4/cache.db2",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3162",
+    "test": "T3",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3162 MW/T3/cache.db2",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3162",
+    "test": "T3",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3162 MW TFA/T3/cache.db2",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3187",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3187 JW/T2/cache.db2",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3187",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3187 JW TFA/T2/cache.db2",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3221",
+    "test": "T2",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3221 JB/T2/cache.db2",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3221",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3221 JB/T1/cache.db2",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3222",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3222 JC/T1/cache.db2",
+    "issue": "missing_patient_id_in_filename"
+  },
+  {
+    "patient_id": "CIPN3222",
+    "test": "T1",
+    "file": "CIPN3_NFB+DL_BL completed T2/NFB+DL CIPN3222 JC TFA/T1/cache.db2",
+    "issue": "missing_patient_id_in_filename"
+  }
+]
