@@ -1,0 +1,15 @@
+{
+  "collection_hardware_counts": {
+    "Deymed": 75,
+    "Zeto": 3
+  },
+  "sampling_rate_counts": {
+    "256": 10,
+    "200": 65,
+    "250": 3 
+  },
+  "eyes_condition_counts": {
+    "Eyes Open": 78
+  },
+  "total_files": 78
+}
