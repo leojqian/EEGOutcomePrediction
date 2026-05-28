@@ -1,0 +1,3 @@
+model,cv_bal_acc,params,boundary_warnings
+logreg,0.7166666666666666,"{""clf__C"": 1, ""clf__l1_ratio"": 0.7, ""clf__penalty"": ""elasticnet"", ""clf__solver"": ""saga""}",
+xgboost,0.7694444444444444,"{""colsample_bytree"": 1.0, ""learning_rate"": 0.2, ""max_depth"": 3, ""n_estimators"": 300, ""reg_lambda"": 1, ""subsample"": 1.0}","colsample_bytree=1.0 at HIGH edge of [0.7, 0.85, 1.0] — consider extending upward; learning_rate=0.2 at HIGH edge of [0.005, 0.01, 0.03, 0.05, 0.1, 0.2] — consider extending upward; n_estimators=300 at HIGH edge of [50, 100, 200, 300] — consider extending upward; subsample=1.0 at HIGH edge of [0.7, 0.85, 1.0] — consider extending upward"

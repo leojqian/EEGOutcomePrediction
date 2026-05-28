@@ -1,0 +1,11 @@
+sheet,band,count,n_folds,selected
+phaselag,Delta,6,7,True
+phaselag,Theta,1,7,False
+phaselag,Alpha,4,7,False
+phaselag,Beta,4,7,False
+phaselag,HighBeta,7,7,True
+phaselag,Alpha1,4,7,False
+phaselag,Alpha2,1,7,False
+phaselag,Beta1,1,7,False
+phaselag,Beta2,3,7,False
+phaselag,Beta3,4,7,False

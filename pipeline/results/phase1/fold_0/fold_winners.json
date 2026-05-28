@@ -1,0 +1,29 @@
+{
+  "coherence": [
+    "Beta3",
+    "HighBeta",
+    "Delta",
+    "Delta",
+    "Beta3",
+    "Beta1",
+    "Beta2"
+  ],
+  "phaselag": [
+    "Theta",
+    "Beta2",
+    "Delta",
+    "Theta",
+    "Alpha2",
+    "HighBeta",
+    "Delta"
+  ],
+  "power_uv1": [
+    "Delta",
+    "Theta",
+    "Delta",
+    "Beta",
+    "Theta",
+    "Theta",
+    "Beta"
+  ]
+}

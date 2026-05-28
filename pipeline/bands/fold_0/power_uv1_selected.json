@@ -1,0 +1,9 @@
+{
+  "sheet_label": "power_uv1",
+  "sheet_name": "Z_FFT_abs_bandpower_uV2",
+  "bands": [
+    "Theta"
+  ],
+  "threshold": 5,
+  "n_folds": 7
+}

@@ -1,0 +1,3 @@
+model,cv_bal_acc,params,boundary_warnings
+logreg,0.6541666666666667,"{""clf__C"": 0.1, ""clf__l1_ratio"": 0.3, ""clf__penalty"": ""elasticnet"", ""clf__solver"": ""saga""}",
+xgboost,0.7027777777777777,"{""colsample_bytree"": 0.85, ""learning_rate"": 0.1, ""max_depth"": 6, ""n_estimators"": 200, ""reg_lambda"": 0.1, ""subsample"": 0.7}","reg_lambda=0.1 at LOW edge of [0.1, 1, 5, 10] — consider extending downward; subsample=0.7 at LOW edge of [0.7, 0.85, 1.0] — consider extending downward"

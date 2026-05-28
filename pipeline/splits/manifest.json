@@ -1,0 +1,43 @@
+{
+  "label_threshold": -2.0,
+  "n_folds": 5,
+  "random_seed": 42,
+  "total_patients": 107,
+  "folds": [
+    {
+      "fold": 0,
+      "n_train": 85,
+      "n_val": 22,
+      "train_pos_rate": 0.5058823529411764,
+      "val_pos_rate": 0.5
+    },
+    {
+      "fold": 1,
+      "n_train": 85,
+      "n_val": 22,
+      "train_pos_rate": 0.5058823529411764,
+      "val_pos_rate": 0.5
+    },
+    {
+      "fold": 2,
+      "n_train": 86,
+      "n_val": 21,
+      "train_pos_rate": 0.5116279069767442,
+      "val_pos_rate": 0.47619047619047616
+    },
+    {
+      "fold": 3,
+      "n_train": 86,
+      "n_val": 21,
+      "train_pos_rate": 0.5,
+      "val_pos_rate": 0.5238095238095238
+    },
+    {
+      "fold": 4,
+      "n_train": 86,
+      "n_val": 21,
+      "train_pos_rate": 0.5,
+      "val_pos_rate": 0.5238095238095238
+    }
+  ]
+}

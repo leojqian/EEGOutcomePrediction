@@ -1,0 +1,9 @@
+{
+  "sheet_label": "coherence",
+  "sheet_name": "Z_FFT_Coherence",
+  "bands": [
+    "HighBeta"
+  ],
+  "threshold": 5,
+  "n_folds": 7
+}

@@ -1,0 +1,61 @@
+{
+  "fold": 0,
+  "selection_mode": "top2_per_sheet",
+  "model": "logreg",
+  "best_params": {
+    "clf__C": 500,
+    "clf__penalty": "l1",
+    "clf__solver": "liblinear"
+  },
+  "boundary_warnings": "",
+  "threshold": 0.5549999999999999,
+  "train_bal_acc_at_threshold": 0.7308970099667773,
+  "train_accuracy": 0.7294117647058823,
+  "n_val": 22,
+  "pos_rate_val": 0.5,
+  "accuracy": 0.6818181818181818,
+  "balanced_accuracy": 0.6818181818181819,
+  "auc": 0.6363636363636364,
+  "average_precision": 0.6045470080159074,
+  "f1": 0.6666666666666666,
+  "confusion_matrix_val": [
+    [
+      8,
+      3
+    ],
+    [
+      4,
+      7
+    ]
+  ],
+  "confusion_matrix_train": [
+    [
+      36,
+      6
+    ],
+    [
+      17,
+      26
+    ]
+  ],
+  "n_features": 12,
+  "summary_funcs": [
+    "mean",
+    "std"
+  ],
+  "selected_bands": {
+    "coherence": [
+      "HighBeta",
+      "Beta2"
+    ],
+    "phaselag": [
+      "HighBeta",
+      "Delta"
+    ],
+    "power_uv1": [
+      "Theta",
+      "Beta3"
+    ]
+  },
+  "n_total_bands": 6
+}

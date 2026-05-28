@@ -1,0 +1,13 @@
+feature
+coherence__HighBeta__mean
+coherence__HighBeta__p95
+coherence__Beta2__mean
+coherence__Beta2__p95
+phaselag__HighBeta__mean
+phaselag__HighBeta__p95
+phaselag__Delta__mean
+phaselag__Delta__p95
+power_uv1__Theta__mean
+power_uv1__Theta__p95
+power_uv1__Beta3__mean
+power_uv1__Beta3__p95

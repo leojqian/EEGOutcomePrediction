@@ -1,0 +1,11 @@
+{
+  "sheet_label": "phaselag",
+  "sheet_name": "Z_FFT_PhaseLag_PLI",
+  "bands": [
+    "Delta",
+    "HighBeta",
+    "Alpha1"
+  ],
+  "threshold": 5,
+  "n_folds": 7
+}

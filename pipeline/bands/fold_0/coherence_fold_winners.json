@@ -1,0 +1,37 @@
+[
+  [
+    "Beta",
+    "HighBeta",
+    "Beta2"
+  ],
+  [
+    "Delta",
+    "HighBeta"
+  ],
+  [
+    "HighBeta",
+    "Beta3"
+  ],
+  [
+    "HighBeta",
+    "Beta3"
+  ],
+  [
+    "Delta",
+    "Alpha",
+    "HighBeta",
+    "Alpha1",
+    "Beta2"
+  ],
+  [
+    "Beta2",
+    "Beta3"
+  ],
+  [
+    "Delta",
+    "Alpha",
+    "HighBeta",
+    "Beta2",
+    "Beta3"
+  ]
+]

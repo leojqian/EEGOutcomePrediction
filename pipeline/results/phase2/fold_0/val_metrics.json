@@ -1,0 +1,37 @@
+{
+  "fold": 0,
+  "n_val": 22,
+  "pos_rate_val": 0.5,
+  "accuracy": 0.6363636363636364,
+  "balanced_accuracy": 0.6363636363636364,
+  "auc": 0.5909090909090909,
+  "n_features": 12,
+  "summary_funcs": [
+    "mean",
+    "std"
+  ],
+  "selected_bands": {
+    "coherence": [
+      "Beta3",
+      "Delta"
+    ],
+    "phaselag": [
+      "Theta",
+      "Delta"
+    ],
+    "power_uv1": [
+      "Theta",
+      "Delta"
+    ]
+  },
+  "best_params": {
+    "learning_rate": 0.01,
+    "max_depth": 3,
+    "n_estimators": 50
+  },
+  "cv_bal_acc": 0.5638888888888889,
+  "train_metrics": {
+    "accuracy": 0.8,
+    "balanced_accuracy": 0.800110741971207
+  }
+}

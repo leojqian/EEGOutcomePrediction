@@ -1,0 +1,63 @@
+{
+  "fold": 0,
+  "selection_mode": "abc_existing",
+  "model": "xgboost",
+  "best_params": {
+    "colsample_bytree": 0.7,
+    "learning_rate": 0.1,
+    "max_depth": 7,
+    "n_estimators": 50,
+    "reg_lambda": 1,
+    "subsample": 0.7
+  },
+  "boundary_warnings": "colsample_bytree=0.7 at LOW edge of [0.7, 0.85, 1.0] \u2014 consider extending downward; max_depth=7 at HIGH edge of [2, 3, 4, 5, 6, 7] \u2014 consider extending upward; n_estimators=50 at LOW edge of [50, 100, 200, 300] \u2014 consider extending downward; subsample=0.7 at LOW edge of [0.7, 0.85, 1.0] \u2014 consider extending downward",
+  "threshold": 0.5349999999999999,
+  "train_bal_acc_at_threshold": 0.9767441860465116,
+  "train_accuracy": 0.9764705882352941,
+  "n_val": 22,
+  "pos_rate_val": 0.5,
+  "accuracy": 0.5454545454545454,
+  "balanced_accuracy": 0.5454545454545454,
+  "auc": 0.628099173553719,
+  "average_precision": 0.6079638721349951,
+  "f1": 0.5,
+  "confusion_matrix_val": [
+    [
+      7,
+      4
+    ],
+    [
+      6,
+      5
+    ]
+  ],
+  "confusion_matrix_train": [
+    [
+      42,
+      0
+    ],
+    [
+      2,
+      41
+    ]
+  ],
+  "n_features": 10,
+  "summary_funcs": [
+    "mean",
+    "std"
+  ],
+  "selected_bands": {
+    "coherence": [
+      "HighBeta"
+    ],
+    "phaselag": [
+      "Delta",
+      "HighBeta",
+      "Alpha1"
+    ],
+    "power_uv1": [
+      "Theta"
+    ]
+  },
+  "n_total_bands": 5
+}

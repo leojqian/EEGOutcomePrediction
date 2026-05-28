@@ -1,0 +1,12 @@
+{
+  "coherence": [
+    "Theta"
+  ],
+  "phase_lag": [
+    "Delta",
+    "Beta1"
+  ],
+  "power_uv1": [
+    "Alpha2"
+  ]
+}

@@ -1,0 +1,2 @@
+model,cv_bal_acc,params,boundary_warnings
+xgboost,0.65,"{""colsample_bytree"": 0.7, ""learning_rate"": 0.1, ""max_depth"": 7, ""n_estimators"": 50, ""reg_lambda"": 1, ""subsample"": 0.7}","colsample_bytree=0.7 at LOW edge of [0.7, 0.85, 1.0] — consider extending downward; max_depth=7 at HIGH edge of [2, 3, 4, 5, 6, 7] — consider extending upward; n_estimators=50 at LOW edge of [50, 100, 200, 300] — consider extending downward; subsample=0.7 at LOW edge of [0.7, 0.85, 1.0] — consider extending downward"

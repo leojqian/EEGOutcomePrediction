@@ -1,0 +1,77 @@
+{
+  "fold": 2,
+  "selection_mode": "top2_per_sheet",
+  "model": "xgboost",
+  "best_params": {
+    "colsample_bytree": 0.7,
+    "learning_rate": 0.01,
+    "max_depth": 2,
+    "n_estimators": 50,
+    "reg_lambda": 10,
+    "subsample": 1.0
+  },
+  "boundary_warnings": "colsample_bytree=0.7 at LOW edge of [0.7, 0.85, 1.0] \u2014 consider extending downward; max_depth=2 at LOW edge of [2, 3, 4, 5, 6, 7] \u2014 consider extending downward; n_estimators=50 at LOW edge of [50, 100, 200, 300] \u2014 consider extending downward; reg_lambda=10 at HIGH edge of [0.1, 1, 5, 10] \u2014 consider extending upward; subsample=1.0 at HIGH edge of [0.7, 0.85, 1.0] \u2014 consider extending upward",
+  "threshold": 0.4799999999999999,
+  "train_bal_acc_at_threshold": 0.8344155844155845,
+  "train_accuracy": 0.8372093023255814,
+  "n_val": 21,
+  "pos_rate_val": 0.47619047619047616,
+  "accuracy": 0.6190476190476191,
+  "balanced_accuracy": 0.6272727272727273,
+  "auc": 0.6136363636363636,
+  "average_precision": 0.5741196303696304,
+  "f1": 0.6666666666666666,
+  "confusion_matrix_val": [
+    [
+      5,
+      6
+    ],
+    [
+      2,
+      8
+    ]
+  ],
+  "confusion_matrix_train": [
+    [
+      30,
+      12
+    ],
+    [
+      2,
+      42
+    ]
+  ],
+  "n_features": 15,
+  "n_eeg_features": 12,
+  "n_clinical_features": 3,
+  "include_clinical": true,
+  "clinical_features": [
+    "pain_t1",
+    "age",
+    "neurop_months"
+  ],
+  "clinical_medians": {
+    "clinical__pain_t1": 6.0,
+    "clinical__age": 66.0,
+    "clinical__neurop_months": 48.0
+  },
+  "summary_funcs": [
+    "mean",
+    "std"
+  ],
+  "selected_bands": {
+    "coherence": [
+      "Beta",
+      "Beta1"
+    ],
+    "phaselag": [
+      "HighBeta",
+      "Delta"
+    ],
+    "power_uv1": [
+      "Beta",
+      "Alpha2"
+    ]
+  },
+  "n_total_bands": 6
+}

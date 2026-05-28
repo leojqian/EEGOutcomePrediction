@@ -1,0 +1,30 @@
+{
+  "fold_index": 0,
+  "rule": "top_k",
+  "k": 2,
+  "threshold": 4,
+  "n_folds": 7,
+  "summary_funcs": [
+    "mean",
+    "std"
+  ],
+  "sheets": {
+    "coherence": "Z_FFT_Coherence",
+    "phaselag": "Z_FFT_PhaseLag_PLI",
+    "power_uv1": "Z_FFT_abs_bandpower_uV2"
+  },
+  "selected": {
+    "coherence": [
+      "Beta3",
+      "Delta"
+    ],
+    "phaselag": [
+      "Theta",
+      "Delta"
+    ],
+    "power_uv1": [
+      "Theta",
+      "Delta"
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "fold": 0,
+  "selection_mode": "top2_per_sheet",
+  "model": "xgboost",
+  "best_params": {
+    "colsample_bytree": 0.85,
+    "learning_rate": 0.05,
+    "max_depth": 5,
+    "n_estimators": 100,
+    "reg_lambda": 1,
+    "subsample": 0.85
+  },
+  "boundary_warnings": "",
+  "threshold": 0.36499999999999994,
+  "train_bal_acc_at_threshold": 1.0,
+  "train_accuracy": 1.0,
+  "n_val": 22,
+  "pos_rate_val": 0.5,
+  "accuracy": 0.6818181818181818,
+  "balanced_accuracy": 0.6818181818181819,
+  "auc": 0.6115702479338844,
+  "average_precision": 0.5591022613749886,
+  "f1": 0.72,
+  "confusion_matrix_val": [
+    [
+      6,
+      5
+    ],
+    [
+      2,
+      9
+    ]
+  ],
+  "confusion_matrix_train": [
+    [
+      42,
+      0
+    ],
+    [
+      0,
+      43
+    ]
+  ],
+  "n_features": 12,
+  "summary_funcs": [
+    "mean",
+    "median"
+  ],
+  "selected_bands": {
+    "coherence": [
+      "HighBeta",
+      "Beta2"
+    ],
+    "phaselag": [
+      "HighBeta",
+      "Delta"
+    ],
+    "power_uv1": [
+      "Theta",
+      "Beta3"
+    ]
+  },
+  "n_total_bands": 6
+}
