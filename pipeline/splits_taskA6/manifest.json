@@ -1,0 +1,47 @@
+{
+  "task": "A_baseline_pain",
+  "pain_threshold": 6.0,
+  "label_rule": "pain_t1 >= threshold",
+  "n_folds": 5,
+  "stratification": "binary baseline-pain label",
+  "random_seed": 42,
+  "total_patients": 107,
+  "pos_rate": 0.5887850467289719,
+  "folds": [
+    {
+      "fold": 0,
+      "n_train": 85,
+      "n_val": 22,
+      "train_pos_rate": 0.5882352941176471,
+      "val_pos_rate": 0.5909090909090909
+    },
+    {
+      "fold": 1,
+      "n_train": 85,
+      "n_val": 22,
+      "train_pos_rate": 0.5882352941176471,
+      "val_pos_rate": 0.5909090909090909
+    },
+    {
+      "fold": 2,
+      "n_train": 86,
+      "n_val": 21,
+      "train_pos_rate": 0.5813953488372093,
+      "val_pos_rate": 0.6190476190476191
+    },
+    {
+      "fold": 3,
+      "n_train": 86,
+      "n_val": 21,
+      "train_pos_rate": 0.5930232558139535,
+      "val_pos_rate": 0.5714285714285714
+    },
+    {
+      "fold": 4,
+      "n_train": 86,
+      "n_val": 21,
+      "train_pos_rate": 0.5930232558139535,
+      "val_pos_rate": 0.5714285714285714
+    }
+  ]
+}

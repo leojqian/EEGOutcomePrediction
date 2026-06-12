@@ -1,0 +1,68 @@
+{
+  "fold": 4,
+  "selection_mode": "top2_per_sheet",
+  "output_tag": "top2_per_sheet_v2",
+  "model": "svm",
+  "best_params": {
+    "clf__C": 1,
+    "clf__gamma": "scale",
+    "clf__kernel": "rbf"
+  },
+  "boundary_warnings": "",
+  "ensemble_oof_ba": 0.7093023255813954,
+  "best_single_oof_ba": 0.7209302325581395,
+  "ensemble_member_inner_cv_ba": {
+    "logreg": 0.7097222222222223,
+    "rf": 0.673611111111111,
+    "svm": 0.7180555555555557,
+    "xgboost": 0.7152777777777778
+  },
+  "threshold": 0.5099999999999999,
+  "threshold_source": "inner_cv_oof_train",
+  "v1_style_threshold": 0.57,
+  "oof_train_bal_acc_at_threshold": 0.7209302325581395,
+  "train_accuracy": 0.813953488372093,
+  "n_val": 21,
+  "pos_rate_val": 0.5238095238095238,
+  "accuracy": 0.5714285714285714,
+  "balanced_accuracy": 0.5681818181818181,
+  "auc": 0.6727272727272727,
+  "average_precision": 0.752958152958153,
+  "f1": 0.6086956521739131,
+  "confusion_matrix_val": [
+    [
+      5,
+      5
+    ],
+    [
+      4,
+      7
+    ]
+  ],
+  "n_features": 15,
+  "n_eeg_features": 12,
+  "n_clinical_features": 3,
+  "summary_funcs": [
+    "mean",
+    "std"
+  ],
+  "selected_bands": {
+    "coherence": [
+      "Beta1",
+      "Delta"
+    ],
+    "phaselag": [
+      "HighBeta",
+      "Theta"
+    ],
+    "power_uv1": [
+      "Alpha2",
+      "Theta"
+    ]
+  },
+  "clinical_medians": {
+    "clinical__pain_t1": 6.0,
+    "clinical__age": 66.0,
+    "clinical__neurop_months": 52.5
+  }
+}

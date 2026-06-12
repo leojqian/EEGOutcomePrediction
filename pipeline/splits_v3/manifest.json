@@ -1,0 +1,55 @@
+{
+  "label_threshold": -2.0,
+  "n_folds": 5,
+  "n_pain_bins": 3,
+  "stratification": "label x pain_t1_tercile",
+  "random_seed": 42,
+  "total_patients": 107,
+  "folds": [
+    {
+      "fold": 0,
+      "n_train": 85,
+      "n_val": 22,
+      "train_pos_rate": 0.5176470588235295,
+      "val_pos_rate": 0.45454545454545453,
+      "train_pain_t1_mean": 5.882352941176471,
+      "val_pain_t1_mean": 5.681818181818182
+    },
+    {
+      "fold": 1,
+      "n_train": 85,
+      "n_val": 22,
+      "train_pos_rate": 0.5058823529411764,
+      "val_pos_rate": 0.5,
+      "train_pain_t1_mean": 5.788235294117647,
+      "val_pain_t1_mean": 6.045454545454546
+    },
+    {
+      "fold": 2,
+      "n_train": 86,
+      "n_val": 21,
+      "train_pos_rate": 0.5,
+      "val_pos_rate": 0.5238095238095238,
+      "train_pain_t1_mean": 5.825581395348837,
+      "val_pain_t1_mean": 5.904761904761905
+    },
+    {
+      "fold": 3,
+      "n_train": 86,
+      "n_val": 21,
+      "train_pos_rate": 0.5,
+      "val_pos_rate": 0.5238095238095238,
+      "train_pain_t1_mean": 5.825581395348837,
+      "val_pain_t1_mean": 5.904761904761905
+    },
+    {
+      "fold": 4,
+      "n_train": 86,
+      "n_val": 21,
+      "train_pos_rate": 0.5,
+      "val_pos_rate": 0.5238095238095238,
+      "train_pain_t1_mean": 5.883720930232558,
+      "val_pain_t1_mean": 5.666666666666667
+    }
+  ]
+}

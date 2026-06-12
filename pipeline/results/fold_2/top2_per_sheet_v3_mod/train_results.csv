@@ -1,0 +1,5 @@
+model,cv_bal_acc,params,boundary_warnings
+logreg,0.6833333333333333,"{""clf__C"": 0.1, ""clf__penalty"": ""l1"", ""clf__solver"": ""liblinear""}",
+rf,0.7097222222222221,"{""max_depth"": 5, ""max_features"": ""sqrt"", ""min_samples_leaf"": 1, ""min_samples_split"": 5, ""n_estimators"": 800}","min_samples_leaf=1 at LOW edge of [1, 2, 4]; n_estimators=800 at HIGH edge of [200, 400, 800]"
+svm,0.6402777777777777,"{""clf__C"": 1, ""clf__gamma"": 0.01, ""clf__kernel"": ""rbf""}",
+xgboost,0.7152777777777777,"{""colsample_bytree"": 0.7, ""learning_rate"": 0.005, ""max_depth"": 2, ""n_estimators"": 200, ""reg_lambda"": 10, ""subsample"": 1.0}","colsample_bytree=0.7 at LOW edge of [0.7, 0.85, 1.0]; learning_rate=0.005 at LOW edge of [0.005, 0.01, 0.03, 0.05, 0.1, 0.2]; max_depth=2 at LOW edge of [2, 3, 4, 5, 6, 7]; reg_lambda=10 at HIGH edge of [0.1, 1, 5, 10]; subsample=1.0 at HIGH edge of [0.7, 0.85, 1.0]"

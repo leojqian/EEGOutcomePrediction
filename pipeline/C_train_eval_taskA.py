@@ -1,0 +1,426 @@
+"""
+Module C (Task A) — BASELINE-PAIN prediction.
+
+Same machinery as C_train_eval_v3.py (4 model families, soft-vote ensemble
+adjudication, inner-CV OOF threshold calibration, one-shot held-out eval),
+but for Task A:
+  - Label comes from the Task A splits (y = 1[pain_t1 >= threshold]).
+  - Clinical features are AGE + NEUROPATHY DURATION only.
+    pain_t1 is the TARGET and is excluded; treatment modality is excluded
+    (per Figure 1, Task A inputs = EEG + age + neuropathy duration).
+
+Reads SPLITS_TAG=taskA{thr} (set by the driver) → splits_taskA{thr}/,
+bands_taskA{thr}/, results_taskA{thr}/.
+
+Outputs (in pipeline/results_taskA{thr}/fold_{K}/taskA_top2/):
+  feature_list.csv, train_results.csv, test_predictions.csv,
+  test_metrics.json, model.pkl
+"""
+
+# %% [Imports + config]
+import os, re, glob, json, pickle, warnings
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+from sklearn.base import clone
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.model_selection import (StratifiedGroupKFold, GridSearchCV,
+                                      cross_val_predict)
+from sklearn.metrics import (
+    accuracy_score, balanced_accuracy_score, roc_auc_score,
+    average_precision_score, f1_score, confusion_matrix,
+)
+
+try:
+    from xgboost import XGBClassifier
+    HAS_XGB = True
+except ImportError:
+    HAS_XGB = False
+
+warnings.filterwarnings("ignore")
+
+PROJECT_DIR    = Path("/Users/leoqian/mdanderson/EEGOutcomePrediction")
+DATA_DIR       = PROJECT_DIR / "processeddata"
+SPLITS_TAG     = os.environ.get("SPLITS_TAG", "taskA6")
+SPLITS_DIR     = PROJECT_DIR / "pipeline" / f"splits_{SPLITS_TAG}"
+BANDS_BASE_TAG = f"_{SPLITS_TAG}"
+RESULTS_BASE_TAG = BANDS_BASE_TAG
+
+# --- Methodology knobs ----------------------------------------------------
+FOLD_INDEX     = int(os.environ.get("FOLD_INDEX", 0))
+SELECTION_MODE = "top2_per_sheet"      # source mode for Module B output
+OUTPUT_TAG     = "taskA_top2"
+SUMMARY_FUNCS  = ["mean", "std"]
+MODEL_CV_FOLDS = 5
+RANDOM_SEED    = 42
+
+# Task A clinical inputs: age + neuropathy duration ONLY.
+# pain_t1 is the target (excluded); modality excluded per Figure 1.
+INCLUDE_CLINICAL  = True
+CLINICAL_FEATURES = ["age", "neurop_months"]
+OUTCOMES_FILE     = DATA_DIR / "Randomization factors and Primary outcome.xlsx"
+
+BANDS_DIR = (PROJECT_DIR / "pipeline" / f"bands{BANDS_BASE_TAG}"
+             / f"fold_{FOLD_INDEX}" / SELECTION_MODE)
+OUT_DIR   = (PROJECT_DIR / "pipeline" / f"results{RESULTS_BASE_TAG}"
+             / f"fold_{FOLD_INDEX}" / OUTPUT_TAG)
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+XGB_PARAM_GRID = {
+    "n_estimators":     [50, 100, 200, 300],
+    "max_depth":        [2, 3, 4, 5, 6, 7],
+    "learning_rate":    [0.005, 0.01, 0.03, 0.05, 0.1, 0.2],
+    "subsample":        [0.7, 0.85, 1.0],
+    "colsample_bytree": [0.7, 0.85, 1.0],
+    "reg_lambda":       [0.1, 1, 5, 10],
+}
+
+LR_C_VALUES = [1e-4, 1e-3, 5e-3, 1e-2, 5e-2, 1e-1, 0.5, 1, 5, 10, 50, 100, 500]
+LR_PARAM_GRID = [
+    {"clf__solver": ["liblinear"], "clf__penalty": ["l1", "l2"],
+     "clf__C": LR_C_VALUES},
+    {"clf__solver": ["saga"], "clf__penalty": ["l2"],
+     "clf__C": LR_C_VALUES},
+    {"clf__solver": ["saga"], "clf__penalty": ["elasticnet"],
+     "clf__C": [1e-2, 1e-1, 1, 10, 100],
+     "clf__l1_ratio": [0.1, 0.3, 0.5, 0.7, 0.9]},
+]
+
+RF_PARAM_GRID = {
+    "n_estimators":     [200, 400, 800],
+    "max_depth":        [None, 3, 5, 8],
+    "min_samples_split":[2, 5, 10],
+    "min_samples_leaf": [1, 2, 4],
+    "max_features":     ["sqrt", 0.5],
+}
+
+SVM_PARAM_GRID = [{
+    "clf__C":     [0.1, 1, 10, 100],
+    "clf__gamma": ["scale", 0.01, 0.1, 1],
+    "clf__kernel":["rbf"],
+}, {
+    "clf__C":     [0.1, 1, 10, 100],
+    "clf__kernel":["linear"],
+}]
+
+
+def check_grid_boundaries(best_params, distributions):
+    notes = []
+    for k, v in best_params.items():
+        if k not in distributions:
+            continue
+        try:
+            opts = sorted(distributions[k])
+        except TypeError:
+            continue
+        if v == opts[0]:
+            notes.append(f"{k}={v} at LOW edge of {opts}")
+        elif v == opts[-1]:
+            notes.append(f"{k}={v} at HIGH edge of {opts}")
+    return notes
+
+
+# %% [Load fold IDs + selected bands from B]
+train_ids = np.load(SPLITS_DIR / f"fold_{FOLD_INDEX}_train.npy")
+val_ids   = np.load(SPLITS_DIR / f"fold_{FOLD_INDEX}_val.npy")
+with open(SPLITS_DIR / "labels.json") as f:
+    labels = {int(p): int(y) for p, y in json.load(f).items()}
+
+VAL_ID_SET = frozenset(int(p) for p in val_ids)
+def assert_no_val_leak(pids, where):
+    leaked = VAL_ID_SET & set(int(p) for p in pids)
+    if leaked:
+        raise RuntimeError(f"LEAKAGE in {where}: val pids {sorted(leaked)} present.")
+
+selected = {}
+for selj in sorted(BANDS_DIR.glob("*_selected.json")):
+    sheet_label = selj.name.replace("_selected.json", "")
+    with open(selj) as f:
+        selected[sheet_label] = json.load(f)
+print(f"Task A (pain_t1 threshold via {SPLITS_TAG}) | fold {FOLD_INDEX}")
+print(f"Loaded selected bands for {len(selected)} sheets:")
+for label, info in selected.items():
+    print(f"  {label} ({info['sheet_name']}): {info['bands']}")
+if not any(info["bands"] for info in selected.values()):
+    raise RuntimeError("No bands selected — re-run Module B first.")
+
+# %% [Patient -> file map]
+files_by_pid = {}
+for f in sorted(glob.glob(str(DATA_DIR / "CIPN3*.xlsx"))):
+    m = re.search(r"CIPN3(\d{3})", os.path.basename(f))
+    if m:
+        files_by_pid[int(m.group(1))] = f
+
+
+# %% [Clinical features: age + neuropathy duration only]
+def _load_clinical_by_pid():
+    df = pd.read_excel(OUTCOMES_FILE)
+    t1 = df[df["Event Name"] == "T1"].copy()
+    t1["age"]           = pd.to_numeric(t1["Age"], errors="coerce")
+    t1["neurop_months"] = pd.to_numeric(
+        t1["How many months have you been experiencing neuropathy?"], errors="coerce")
+    out = {}
+    for _, row in t1.iterrows():
+        pid = int(row["Patient number"])
+        out[pid] = {
+            "age":           float(row["age"])           if pd.notna(row["age"])           else np.nan,
+            "neurop_months": float(row["neurop_months"]) if pd.notna(row["neurop_months"]) else np.nan,
+        }
+    return out
+
+clinical_by_pid = _load_clinical_by_pid() if INCLUDE_CLINICAL else {}
+
+
+# %% [Feature extraction]
+SUMMARY_FUNC_MAP = {"mean": np.nanmean, "std": np.nanstd, "median": np.nanmedian}
+
+def extract_features(pid, selected, summary_funcs):
+    vals, names = [], []
+    for sheet_label, info in selected.items():
+        sheet_name = info["sheet_name"]
+        bands      = info["bands"]
+        if not bands: continue
+        df_sheet = pd.read_excel(files_by_pid[int(pid)],
+                                  sheet_name=sheet_name, index_col=0)
+        for b in bands:
+            if b not in df_sheet.columns: continue
+            col = df_sheet[b].values.astype(float)
+            for fn_name in summary_funcs:
+                vals.append(float(SUMMARY_FUNC_MAP[fn_name](col)))
+                names.append(f"{sheet_label}__{b}__{fn_name}")
+    if INCLUDE_CLINICAL:
+        clin = clinical_by_pid.get(int(pid), {})
+        for cf in CLINICAL_FEATURES:
+            vals.append(clin.get(cf, np.nan))
+            names.append(f"clinical__{cf}")
+    return np.array(vals, dtype=float), names
+
+
+# %% [Build train + val matrices]
+assert_no_val_leak(train_ids, "Task A C train feature extraction")
+
+X_train_rows, feature_names = [], None
+for p in train_ids:
+    vec, names = extract_features(p, selected, SUMMARY_FUNCS)
+    X_train_rows.append(vec); feature_names = names
+X_train = np.vstack(X_train_rows)
+y_train = np.array([labels[int(p)] for p in train_ids])
+
+# Train-median clinical imputation
+clinical_idx = [i for i, n in enumerate(feature_names) if n.startswith("clinical__")]
+clinical_medians = {}
+for i in clinical_idx:
+    col = X_train[:, i]
+    med = float(np.nanmedian(col))
+    clinical_medians[feature_names[i]] = med
+    X_train[np.isnan(col), i] = med
+X_train = np.nan_to_num(X_train)
+
+n_clinical = len(clinical_idx)
+n_eeg      = len(feature_names) - n_clinical
+print(f"\nTrain matrix: {X_train.shape} | EEG {n_eeg}, clinical {n_clinical}")
+pd.DataFrame({"feature": feature_names}).to_csv(OUT_DIR/"feature_list.csv", index=False)
+
+groups_train = np.array([int(p) for p in train_ids])
+inner_cv = StratifiedGroupKFold(n_splits=MODEL_CV_FOLDS, shuffle=True,
+                                 random_state=RANDOM_SEED)
+
+# %% [Model search]
+models = {
+    "logreg": (
+        Pipeline([("scaler", StandardScaler()),
+                  ("clf", LogisticRegression(class_weight="balanced",
+                                             max_iter=50000, tol=1e-3,
+                                             random_state=RANDOM_SEED))]),
+        LR_PARAM_GRID,
+    ),
+    "rf": (
+        RandomForestClassifier(class_weight="balanced", n_jobs=1,
+                               random_state=RANDOM_SEED),
+        RF_PARAM_GRID,
+    ),
+    "svm": (
+        Pipeline([("scaler", StandardScaler()),
+                  ("clf", SVC(class_weight="balanced", probability=True,
+                              random_state=RANDOM_SEED))]),
+        SVM_PARAM_GRID,
+    ),
+}
+if HAS_XGB:
+    models["xgboost"] = (
+        XGBClassifier(eval_metric="logloss", random_state=RANDOM_SEED,
+                      n_jobs=1, tree_method="hist"),
+        XGB_PARAM_GRID,
+    )
+
+train_results, fitted = [], {}
+for name, (est, params) in models.items():
+    print(f"\n--- Grid-searching {name} ---")
+    searcher = GridSearchCV(est, params, scoring="balanced_accuracy",
+                            cv=inner_cv, n_jobs=-1, refit=True)
+    searcher.fit(X_train, y_train, groups=groups_train)
+    fitted[name] = searcher
+
+    boundaries = (check_grid_boundaries(searcher.best_params_, params)
+                  if isinstance(params, dict) else [])
+    print(f"  {name}: CV bal_acc={searcher.best_score_:.3f} | "
+          f"params={searcher.best_params_}")
+
+    train_results.append({
+        "model":      name,
+        "cv_bal_acc": float(searcher.best_score_),
+        "params":     json.dumps(searcher.best_params_),
+        "boundary_warnings": "; ".join(boundaries),
+    })
+
+pd.DataFrame(train_results).to_csv(OUT_DIR/"train_results.csv", index=False)
+best_name = max(train_results, key=lambda r: r["cv_bal_acc"])["model"]
+best_searcher = fitted[best_name]
+best_est = best_searcher.best_estimator_
+print(f"\nBest single model family (by inner CV): {best_name}  "
+      f"(BA={best_searcher.best_score_:.3f})")
+
+
+# %% [Soft-vote ensemble across model families]
+class SoftVoteEnsemble:
+    def __init__(self, estimators):
+        self.estimators = estimators
+    def predict_proba(self, X):
+        probs = np.stack(
+            [est.predict_proba(X)[:, 1] for est in self.estimators.values()],
+            axis=0)
+        avg = probs.mean(axis=0)
+        return np.column_stack([1 - avg, avg])
+
+ensemble_members = {name: fitted[name].best_estimator_ for name in models}
+
+oof_proba_per_family = {}
+for name in models:
+    clf = clone(fitted[name].best_estimator_)
+    oof_proba_per_family[name] = cross_val_predict(
+        clf, X_train, y_train, groups=groups_train,
+        cv=inner_cv, method="predict_proba", n_jobs=-1)[:, 1]
+oof_proba_ens = np.mean(list(oof_proba_per_family.values()), axis=0)
+
+def best_ba_on(oof_p):
+    ths_local = np.linspace(0.05, 0.95, 181)
+    bas = np.array([balanced_accuracy_score(y_train, (oof_p >= t).astype(int))
+                    for t in ths_local])
+    return float(bas.max())
+
+ensemble_oof_ba = best_ba_on(oof_proba_ens)
+single_oof_ba   = best_ba_on(oof_proba_per_family[best_name])
+print(f"  Ensemble OOF BA: {ensemble_oof_ba:.3f}   |   "
+      f"best single OOF BA ({best_name}): {single_oof_ba:.3f}")
+
+if ensemble_oof_ba > single_oof_ba:
+    print(f"  → ENSEMBLE chosen as final classifier")
+    best_est = SoftVoteEnsemble(ensemble_members)
+    best_name = "ensemble_soft_vote"
+else:
+    print(f"  → Single-best ({best_name}) kept as final classifier")
+
+# %% [Inner-CV OOF threshold calibration]
+if best_name == "ensemble_soft_vote":
+    oof_proba_for_th = oof_proba_ens
+else:
+    oof_proba_for_th = oof_proba_per_family[best_name]
+
+ths = np.linspace(0.05, 0.95, 181)
+ba_curve = np.array([
+    balanced_accuracy_score(y_train, (oof_proba_for_th >= t).astype(int))
+    for t in ths
+])
+best_oof_ba = float(ba_curve.max())
+top_mask = ba_curve >= best_oof_ba - 1e-9
+top_ths = ths[top_mask]
+best_th = float(top_ths[np.argmin(np.abs(top_ths - 0.5))])
+print(f"\nThreshold calibration (OOF): τ = {best_th:.3f}  "
+      f"| OOF BA at τ = {best_oof_ba:.3f}  "
+      f"(plateau width = {len(top_ths)} thresholds)")
+
+p_train_refit = best_est.predict_proba(X_train)[:, 1]
+
+# %% [Final one-shot val evaluation]
+X_val_rows = []
+for p in val_ids:
+    vec, names = extract_features(p, selected, SUMMARY_FUNCS)
+    assert names == feature_names
+    X_val_rows.append(vec)
+X_val = np.vstack(X_val_rows)
+for i in clinical_idx:
+    med = clinical_medians[feature_names[i]]
+    mask = np.isnan(X_val[:, i])
+    if mask.any():
+        X_val[mask, i] = med
+X_val = np.nan_to_num(X_val)
+y_val = np.array([labels[int(p)] for p in val_ids])
+
+proba = best_est.predict_proba(X_val)[:, 1]
+pred  = (proba >= best_th).astype(int)
+cm_val = confusion_matrix(y_val, pred, labels=[0, 1]).tolist()
+
+train_pred = (p_train_refit >= best_th).astype(int)
+train_acc  = float(accuracy_score(y_train, train_pred))
+
+best_row_info = next((r for r in train_results if r["model"] == best_name), None)
+metrics = {
+    "fold":            int(FOLD_INDEX),
+    "task":            "A_baseline_pain",
+    "splits_tag":      SPLITS_TAG,
+    "selection_mode":  SELECTION_MODE,
+    "output_tag":      OUTPUT_TAG,
+    "model":           best_name,
+    "best_params":     (json.loads(best_row_info["params"]) if best_row_info
+                        else {"ensemble_members": list(ensemble_members.keys())}),
+    "ensemble_oof_ba":   ensemble_oof_ba,
+    "best_single_oof_ba": single_oof_ba,
+    "ensemble_member_inner_cv_ba": {n: float(fitted[n].best_score_)
+                                     for n in models},
+    "threshold":       float(best_th),
+    "threshold_source":"inner_cv_oof_train",
+    "oof_train_bal_acc_at_threshold": float(best_oof_ba),
+    "train_accuracy":  train_acc,
+    "n_val":           int(len(y_val)),
+    "pos_rate_val":    float(y_val.mean()),
+    "accuracy":        float(accuracy_score(y_val, pred)),
+    "balanced_accuracy": float(balanced_accuracy_score(y_val, pred)),
+    "auc":             float(roc_auc_score(y_val, proba)),
+    "average_precision": float(average_precision_score(y_val, proba)),
+    "f1":              float(f1_score(y_val, pred, zero_division=0)),
+    "confusion_matrix_val": cm_val,
+    "n_features":      int(len(feature_names)),
+    "n_eeg_features":      n_eeg,
+    "n_clinical_features": n_clinical,
+    "summary_funcs":   list(SUMMARY_FUNCS),
+    "selected_bands":  {label: info["bands"] for label, info in selected.items()},
+    "clinical_medians": clinical_medians,
+}
+
+pd.DataFrame({
+    "pid": val_ids, "y_true": y_val, "y_pred": pred, "proba": proba,
+}).to_csv(OUT_DIR/"test_predictions.csv", index=False)
+with open(OUT_DIR/"test_metrics.json", "w") as f:
+    json.dump(metrics, f, indent=2)
+with open(OUT_DIR/"model.pkl", "wb") as f:
+    pickle.dump({
+        "name": best_name, "model": best_est,
+        "feature_names": feature_names,
+        "selected_bands": selected,
+        "summary_funcs": list(SUMMARY_FUNCS),
+        "clinical_medians": clinical_medians,
+        "fold": FOLD_INDEX, "threshold": best_th,
+    }, f)
+
+print(f"\n=== Task A Fold {FOLD_INDEX} ({SPLITS_TAG}) ===")
+print(f"  best model: {best_name}")
+print(f"  τ = {best_th:.3f} (OOF-calibrated)")
+print(f"  val accuracy: {metrics['accuracy']:.3f}")
+print(f"  val balanced accuracy: {metrics['balanced_accuracy']:.3f}")
+print(f"  val AUC: {metrics['auc']:.3f}")
+print(f"  val CM [[TN,FP],[FN,TP]]: {cm_val}")

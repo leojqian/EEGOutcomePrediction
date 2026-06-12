@@ -1,0 +1,11 @@
+sheet,band,count,n_folds,selected
+coherence,Delta,4,7,False
+coherence,Theta,1,7,False
+coherence,Alpha,2,7,False
+coherence,Beta,6,7,True
+coherence,HighBeta,3,7,False
+coherence,Alpha1,6,7,True
+coherence,Alpha2,1,7,False
+coherence,Beta1,1,7,False
+coherence,Beta2,4,7,False
+coherence,Beta3,4,7,False

@@ -1,0 +1,2 @@
+threshold,n,pos_rate,pooled_auc,pooled_accuracy,pooled_bal_acc,mean_fold_auc,std_fold_auc,mean_fold_bal_acc
+6,107,0.5887850467289719,0.4989,0.514,0.5016,0.5189,0.1608,0.4999

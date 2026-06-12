@@ -1,0 +1,15 @@
+feature
+coherence__Beta3__mean
+coherence__Beta3__std
+coherence__Delta__mean
+coherence__Delta__std
+phaselag__HighBeta__mean
+phaselag__HighBeta__std
+phaselag__Beta2__mean
+phaselag__Beta2__std
+power_uv1__Delta__mean
+power_uv1__Delta__std
+power_uv1__Alpha2__mean
+power_uv1__Alpha2__std
+clinical__age
+clinical__neurop_months

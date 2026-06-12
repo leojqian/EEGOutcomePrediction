@@ -1,0 +1,14 @@
+{
+  "sheet_label": "power_uv1",
+  "sheet_name": "Z_FFT_abs_bandpower_uV2",
+  "bands": [
+    "Theta",
+    "Alpha"
+  ],
+  "selection_mode": "top2_per_sheet",
+  "threshold": 5,
+  "top_k_per_sheet": 2,
+  "n_folds": 7,
+  "inner_cv_bal_acc": null,
+  "best_lr_params": null
+}

@@ -1,0 +1,5 @@
+model,cv_bal_acc,params,boundary_warnings
+logreg,0.6228571428571429,"{""clf__C"": 0.001, ""clf__penalty"": ""l2"", ""clf__solver"": ""saga""}",
+rf,0.5728571428571428,"{""max_depth"": 5, ""max_features"": ""sqrt"", ""min_samples_leaf"": 1, ""min_samples_split"": 10, ""n_estimators"": 400}","min_samples_leaf=1 at LOW edge of [1, 2, 4]; min_samples_split=10 at HIGH edge of [2, 5, 10]"
+svm,0.5785714285714285,"{""clf__C"": 1, ""clf__gamma"": ""scale"", ""clf__kernel"": ""rbf""}",
+xgboost,0.6042857142857143,"{""colsample_bytree"": 0.85, ""learning_rate"": 0.03, ""max_depth"": 4, ""n_estimators"": 100, ""reg_lambda"": 1, ""subsample"": 1.0}","subsample=1.0 at HIGH edge of [0.7, 0.85, 1.0]"

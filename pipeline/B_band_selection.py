@@ -47,7 +47,10 @@ warnings.filterwarnings("ignore")  # mute saga/L1 ConvergenceWarning floods
 
 PROJECT_DIR     = Path("/Users/leoqian/mdanderson/EEGOutcomePrediction")
 DATA_DIR        = PROJECT_DIR / "processeddata"
-SPLITS_DIR      = PROJECT_DIR / "pipeline" / "splits"
+SPLITS_TAG      = os.environ.get("SPLITS_TAG", "")   # "" → splits/, "v3" → splits_v3/
+SPLITS_DIR      = (PROJECT_DIR / "pipeline" /
+                   (f"splits_{SPLITS_TAG}" if SPLITS_TAG else "splits"))
+BANDS_BASE_TAG  = f"_{SPLITS_TAG}" if SPLITS_TAG else ""
 
 # --- Methodology knobs (easy to change) -----------------------------------
 # FOLD_INDEX / SELECTION_MODE accept env-var overrides so the all-folds
@@ -60,7 +63,7 @@ TOP_K_PER_SHEET          = 2         # used when SELECTION_MODE == "top2_per_she
 SELECTION_MODE           = os.environ.get("SELECTION_MODE", "top2_per_sheet")
 RANDOM_SEED              = 42
 
-OUT_DIR = (PROJECT_DIR / "pipeline" / "bands"
+OUT_DIR = (PROJECT_DIR / "pipeline" / f"bands{BANDS_BASE_TAG}"
            / f"fold_{FOLD_INDEX}" / SELECTION_MODE)
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 

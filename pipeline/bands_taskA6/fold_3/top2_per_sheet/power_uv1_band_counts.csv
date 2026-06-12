@@ -1,0 +1,11 @@
+sheet,band,count,n_folds,selected
+power_uv1,Delta,4,7,False
+power_uv1,Theta,5,7,False
+power_uv1,Alpha,6,7,True
+power_uv1,Beta,5,7,False
+power_uv1,HighBeta,4,7,False
+power_uv1,Alpha1,2,7,False
+power_uv1,Alpha2,5,7,False
+power_uv1,Beta1,4,7,False
+power_uv1,Beta2,4,7,False
+power_uv1,Beta3,6,7,True
